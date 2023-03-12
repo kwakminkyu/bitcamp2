@@ -1,10 +1,10 @@
-package java.lang.boot.lang.literal;
+package com.bitcamp2.javaLangBoot.lang;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-// 리터럴 : 숫자를 표현하는 다양한 방법 - 진수법
+//리터럴 : 숫자를 표현하는 다양한 방법 - 진수법
 @RestController
 @RequestMapping("/lang/literal/exam2")
 public class Exam2 {

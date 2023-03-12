@@ -1,10 +1,10 @@
-package java.lang.boot.lang.literal;
+package com.bitcamp2.javaLangBoot.lang;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-// 리터럴 : 정수 리터럴이 표현할 수 있는 값의 범위
+//리터럴 : 정수 리터럴이 표현할 수 있는 값의 범위
 @RestController
 @RequestMapping("/lang/literal/exam3")
 public class Exam3 {

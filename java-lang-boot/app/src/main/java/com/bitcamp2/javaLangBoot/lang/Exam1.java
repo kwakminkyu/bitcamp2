@@ -1,10 +1,10 @@
-package java.lang.boot.lang.literal;
+package com.bitcamp2.javaLangBoot.lang;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-// 리터럴 : 자바에서 값을 표현한 것
+//리터럴 : 자바에서 값을 표현한 것
 @RestController
 @RequestMapping("/lang/literal/exam1")
 public class Exam1 {
