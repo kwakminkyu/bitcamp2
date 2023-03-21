@@ -52,4 +52,11 @@ public class Exam4 {
     }
     return result;
   }
+
+  @GetMapping("/test3")
+  public Object test3() {
+    String[] names = {"홍길동", "임꺽정", "유관순", "안중근", "윤봉길"}; 
+
+    return names;
+  }
 }
