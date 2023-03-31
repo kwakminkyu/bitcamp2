@@ -8,7 +8,7 @@ public class Exam0330 {
 
     // 5 * 5 까지만 출력하라!
     //
-    while (x <= 9) {
+    while (x <= 9) { 
 
       while (y <= 9) {
         System.out.printf("%d * %d = %d\n", x, y, x * y);
