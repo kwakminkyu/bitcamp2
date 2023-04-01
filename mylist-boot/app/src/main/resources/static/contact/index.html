@@ -27,12 +27,13 @@
       return response.json()
     })
     .then(function(contacts) {
-        var xTr = document.createElement("tr")
-        xTr.innerHTML = `<td>${contacts[0]}<td>
-                        <td>${contacts[1]}<td>
-                        <td>${contacts[2]}<td>
-                        <td>${contacts[3]}<td>`
-      })
+      var xTr = document.createElement("tr")
+      xTr.innerHTML = `<td>${contacts[0]}</td>
+                      <td>${contacts[1]}</td>
+                      <td>${contacts[2]}</td>
+                      <td>${contacts[3]}</td>`
+      xTbody.appendChild(xTr)
+    })
   </script>
 </body>
 </html>
