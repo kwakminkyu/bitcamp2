@@ -20,16 +20,19 @@
   </table>
 
   <script>
+    var xTbody = document.querySelector("tbody")
+
     fetch("/contact/list")
     .then(function(response) {
-      return response.text()
+      return response.json()
     })
     .then(function(contacts) {
-      for(var contact of contacts) {
-        var arr = contact.split(",")
-        console.log(arr)
-      }
-    })
+        var xTr = document.createElement("tr")
+        xTr.innerHTML = `<td>${contacts[0]}<td>
+                        <td>${contacts[1]}<td>
+                        <td>${contacts[2]}<td>
+                        <td>${contacts[3]}<td>`
+      })
   </script>
 </body>
 </html>
