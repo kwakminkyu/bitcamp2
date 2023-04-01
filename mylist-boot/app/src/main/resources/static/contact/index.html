@@ -5,6 +5,7 @@
   <title>연락처</title>
 </head>
 <body>
+  <p><a href="form.html">새 연락처</a></p>
   <table border="1">
     <thead>
       <tr>
@@ -27,12 +28,15 @@
       return response.json()
     })
     .then(function(contacts) {
-      var xTr = document.createElement("tr")
-      xTr.innerHTML = `<td>${contacts[0]}</td>
-                      <td>${contacts[1]}</td>
-                      <td>${contacts[2]}</td>
-                      <td>${contacts[3]}</td>`
-      xTbody.appendChild(xTr)
+      for (var i = 0; contacts.length; i++) {
+        var contact = contacts[i]
+        var xTr = document.createElement("tr")
+        xTr.innerHTML = `<td>${contact[0]}</td>
+                        <td>${contact[1]}</td>
+                        <td>${contact[2]}</td>
+                        <td>${contact[3]}</td>`
+        xTbody.appendChild(xTr)
+      }
     })
   </script>
 </body>
