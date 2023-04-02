@@ -31,7 +31,7 @@
       for (var i = 0; contacts.length; i++) {
         var contact = contacts[i]
         var xTr = document.createElement("tr")
-        xTr.innerHTML = `<td>${contact[0]}</td>
+        xTr.innerHTML = `<td><a href="view.html?no=${i}">${contact[0]}</a></td>
                         <td>${contact[1]}</td>
                         <td>${contact[2]}</td>
                         <td>${contact[3]}</td>`

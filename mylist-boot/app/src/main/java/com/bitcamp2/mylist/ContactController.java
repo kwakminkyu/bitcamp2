@@ -22,6 +22,39 @@ public class ContactController {
     }
     contactList[count] = arr;
     count++;
+    return count;
+  }
+
+  @GetMapping("/contact/get")
+  public Object get(int no) {
+    if (contactList[no] == null) {
+      return 0;
+    }
+    return contactList[no];
+  }
+
+  @GetMapping("/contact/update")
+  public int update(int no, String name, String email, String tel, String company) {
+    if (contactList[no] == null) {
+      return 0;
+    }
+    String[] arr = {name, email, tel, company};
+    contactList[no] = arr;
     return 1;
+  }
+
+  @GetMapping("/contact/delete")
+  public int delete(int no) {
+    if (contactList[no] == null) {
+      return 0;
+    }
+    for (int i = no; i < count; i++) {
+      for (int j = i + 1; j < count; j++) {
+        contactList[j - 1] = contactList[j];
+      }
+      count--;
+      return 1;
+    }
+    return 0;
   }
 }

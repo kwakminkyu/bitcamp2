@@ -11,7 +11,8 @@
     전화번호: <input name="tel" type="text"><br>
     회사: <input name="company" type="text"><br>
     * 표시 항목은 필수 입력 항목입니다<br>
-    <button class="add-btn" type="button">추가</button>
+    <button class="update-btn" type="button">변경</button>
+    <button class="delete-btn" type="button">삭제</button>
     <button class="cancel-btn" type="button">취소</button>
   </form>
 
@@ -21,13 +22,34 @@
     var xTel = document.querySelector("input[name=tel]")
     var xCompany = document.querySelector("input[name=company]")
 
-    document.querySelector(".add-btn").addEventListener("click", function(e){
+    const URLSearch = new URLSearchParams(location.search)
+    let qsNo = URLSearch.get("no")
+
+    fetch(`/contact/get?no=${qsNo}`)
+    .then(function(response) {
+      return response.json()
+    })
+    .then(function(contact) {
+      xName.value = contact[0]
+      xEmail.value = contact[1]
+      xTel.value = contact[2]
+      xCompany.value = contact[3]
+    })
+
+    document.querySelector(".update-btn").addEventListener("click", function(e){
       if (xName.value == "" || xEmail.value == "") {
         alert("필수 입력 항목이 비었습니다")
         return
       }
-      fetch(`/contact/add?name=${xName.value}&email=${xEmail.value}&tel=${xTel.value}&company=${xCompany.value}`)
+      fetch(`/contact/update?no=${qsNo}&name=${xName.value}&email=${xEmail.value}&tel=${xTel.value}&company=${xCompany.value}`)
       .then(function(response){
+        location.href = "index.html"
+      })
+    })
+
+    document.querySelector(".delete-btn").addEventListener("click", function(e) {
+      fetch(`/contact/delete?no=${qsNo}`)
+      .then(function() {
         location.href = "index.html"
       })
     })
