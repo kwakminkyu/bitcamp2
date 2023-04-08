@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ContactController {
 
-  String[] contactList = new String[5];
+  String[] contactList;
   int count = 0;
 
   @GetMapping("/contact/list")
@@ -20,8 +20,8 @@ public class ContactController {
 
   @GetMapping("/contact/add")
   public int add(String name, String email, String tel, String company) {
-    if (count == 5) {
-      return 0;
+    if(contactList.length == count) {
+      contactList = grow();
     }
     contactList[count++] = createCSV(name, email, tel, company);
     return count;
@@ -47,29 +47,53 @@ public class ContactController {
   }
 
   @GetMapping("/contact/delete")
-  public int delete(String email) {
-    for (int i = 0; i < count; i++) {
-      if (contactList[i].split(",")[1].equals(email)) {
-        for (int j = i + 1; j < count; j++) {
-          contactList[j - 1] = contactList[j];
-        }
-        count--;
-        return 1;
-      }
+  public Object delete(String email) {
+    int index = indexOf(email);
+    if (index == -1) {
+      return 0;
     }
-    return 0;
+    return remove(index);
   }
 
-  public String createCSV(String name, String email, String tel, String company) {
+  String createCSV(String name, String email, String tel, String company) {
     return name + "," + email + "," + tel + "," + company;
   }
 
-  public int indexOf(String email) {
+  int indexOf(String email) {
     for (int i = 0; i < count; i++) {
       if (contactList[i].split(",")[1].equals(email)) {
         return i;
       }
     }
     return -1;
+  }
+
+  String remove(int index) {
+    String old = contactList[index];
+    for (int i = index + 1; i < count; i++) {
+      contactList[i - 1] = contactList[i];
+    }
+    count--;
+    return old;
+  }
+
+  String[] grow() {
+    String[] arr = new String[newlength()];
+    copy(contactList, arr);
+    return arr;
+  }
+
+  int newlength() {
+    return contactList.length + (contactList.length >> 1);
+  }
+
+  void copy(String[] source, String[] target) {
+    int length = source.length;
+    if (target.length < source.length) {
+      length = target.length;
+    }
+    for (int i = 0; i < length; i++) {
+      target[i] = source[i];
+    }
   }
 }
