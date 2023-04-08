@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ContactController {
 
-  String[] contactList;
+  String[] contactList = new String[5];
   int count = 0;
 
   @GetMapping("/contact/list")
