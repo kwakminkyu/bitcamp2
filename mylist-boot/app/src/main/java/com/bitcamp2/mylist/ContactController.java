@@ -6,55 +6,70 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ContactController {
 
-  Object[] contactList = new Object[5];
+  String[] contactList = new String[5];
   int count = 0;
 
   @GetMapping("/contact/list")
   public Object list() {
-    return contactList;
+    String[] arr = new String[count];
+    for (int i = 0; i < count; i++) {
+      arr[i] = contactList[i];
+    }
+    return arr;
   }
 
   @GetMapping("/contact/add")
   public int add(String name, String email, String tel, String company) {
-    String[] arr = {name, email, tel, company};
     if (count == 5) {
       return 0;
     }
-    contactList[count] = arr;
-    count++;
+    contactList[count++] = createCSV(name, email, tel, company);
     return count;
   }
 
   @GetMapping("/contact/get")
-  public Object get(int no) {
-    if (contactList[no] == null) {
-      return 0;
+  public Object get(String email) {
+    int index = indexOf(email);
+    if (index == -1) {
+      return "";
     }
-    return contactList[no];
+    return contactList[index];
   }
 
   @GetMapping("/contact/update")
-  public int update(int no, String name, String email, String tel, String company) {
-    if (contactList[no] == null) {
-      return 0;
+  public Object update(String name, String email, String tel, String company) {
+    int index = indexOf(email);
+    if (index == -1) {
+      return "";
     }
-    String[] arr = {name, email, tel, company};
-    contactList[no] = arr;
-    return 1;
+    contactList[index] = createCSV(name, email, tel, company);
+    return contactList[index];
   }
 
   @GetMapping("/contact/delete")
-  public int delete(int no) {
-    if (contactList[no] == null) {
-      return 0;
-    }
-    for (int i = no; i < count; i++) {
-      for (int j = i + 1; j < count; j++) {
-        contactList[j - 1] = contactList[j];
+  public int delete(String email) {
+    for (int i = 0; i < count; i++) {
+      if (contactList[i].split(",")[1].equals(email)) {
+        for (int j = i + 1; j < count; j++) {
+          contactList[j - 1] = contactList[j];
+        }
+        count--;
+        return 1;
       }
-      count--;
-      return 1;
     }
     return 0;
+  }
+
+  public String createCSV(String name, String email, String tel, String company) {
+    return name + "," + email + "," + tel + "," + company;
+  }
+
+  public int indexOf(String email) {
+    for (int i = 0; i < count; i++) {
+      if (contactList[i].split(",")[1].equals(email)) {
+        return i;
+      }
+    }
+    return -1;
   }
 }

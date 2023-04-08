@@ -28,7 +28,14 @@
       }
       fetch(`/contact/add?name=${xName.value}&email=${xEmail.value}&tel=${xTel.value}&company=${xCompany.value}`)
       .then(function(response){
-        location.href = "index.html"
+        return response.json()
+      })
+      .then(function(result) {
+        if (result == 0) {
+          alert("연락처가 가득 찼습니다")
+        } else {
+          location.href = "index.html"
+        }
       })
     })
 

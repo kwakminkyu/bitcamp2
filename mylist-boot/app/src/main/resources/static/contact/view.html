@@ -23,13 +23,14 @@
     var xCompany = document.querySelector("input[name=company]")
 
     const URLSearch = new URLSearchParams(location.search)
-    let qsNo = URLSearch.get("no")
+    let qsEmail = URLSearch.get("email")
 
-    fetch(`/contact/get?no=${qsNo}`)
+    fetch(`/contact/get?email=${qsEmail}`)
     .then(function(response) {
-      return response.json()
+      return response.text()
     })
-    .then(function(contact) {
+    .then(function(contacts) {
+      var contact = contacts.split(",")
       xName.value = contact[0]
       xEmail.value = contact[1]
       xTel.value = contact[2]
@@ -41,14 +42,14 @@
         alert("필수 입력 항목이 비었습니다")
         return
       }
-      fetch(`/contact/update?no=${qsNo}&name=${xName.value}&email=${xEmail.value}&tel=${xTel.value}&company=${xCompany.value}`)
-      .then(function(response){
+      fetch(`/contact/update?name=${xName.value}&email=${xEmail.value}&tel=${xTel.value}&company=${xCompany.value}`)
+      .then(function(){
         location.href = "index.html"
       })
     })
 
     document.querySelector(".delete-btn").addEventListener("click", function(e) {
-      fetch(`/contact/delete?no=${qsNo}`)
+      fetch(`/contact/delete?email=${qsEmail}`)
       .then(function() {
         location.href = "index.html"
       })
