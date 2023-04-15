@@ -6,12 +6,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ContactController {
 
-  String[] contactList = new String[5];
+  Contact[] contactList = new Contact[5];
   int count = 0;
 
   @GetMapping("/contact/list")
   public Object list() {
-    String[] arr = new String[count];
+    Contact[] arr = new Contact[count];
     for (int i = 0; i < count; i++) {
       arr[i] = contactList[i];
     }
@@ -19,11 +19,11 @@ public class ContactController {
   }
 
   @GetMapping("/contact/add")
-  public int add(String name, String email, String tel, String company) {
+  public int add(Contact contact) {
     if(contactList.length == count) {
       contactList = grow();
     }
-    contactList[count++] = createCSV(name, email, tel, company);
+    contactList[count++] = contact;
     return count;
   }
 
@@ -37,12 +37,12 @@ public class ContactController {
   }
 
   @GetMapping("/contact/update")
-  public Object update(String name, String email, String tel, String company) {
-    int index = indexOf(email);
+  public Object update(Contact contact) {
+    int index = indexOf(contact.email);
     if (index == -1) {
       return "";
     }
-    contactList[index] = createCSV(name, email, tel, company);
+    contactList[index] = contact;
     return contactList[index];
   }
 
@@ -55,21 +55,17 @@ public class ContactController {
     return remove(index);
   }
 
-  String createCSV(String name, String email, String tel, String company) {
-    return name + "," + email + "," + tel + "," + company;
-  }
-
   int indexOf(String email) {
     for (int i = 0; i < count; i++) {
-      if (contactList[i].split(",")[1].equals(email)) {
+      if (contactList[i].email.equals(email)) {
         return i;
       }
     }
     return -1;
   }
 
-  String remove(int index) {
-    String old = contactList[index];
+  Contact remove(int index) {
+    Contact old = contactList[index];
     for (int i = index + 1; i < count; i++) {
       contactList[i - 1] = contactList[i];
     }
@@ -77,8 +73,8 @@ public class ContactController {
     return old;
   }
 
-  String[] grow() {
-    String[] arr = new String[newlength()];
+  Contact[] grow() {
+    Contact[] arr = new Contact[newlength()];
     copy(contactList, arr);
     return arr;
   }
@@ -87,7 +83,7 @@ public class ContactController {
     return contactList.length + (contactList.length >> 1);
   }
 
-  void copy(String[] source, String[] target) {
+  void copy(Contact[] source, Contact[] target) {
     int length = source.length;
     if (target.length < source.length) {
       length = target.length;
