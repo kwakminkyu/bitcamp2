@@ -23,18 +23,17 @@
     var xCompany = document.querySelector("input[name=company]")
 
     const URLSearch = new URLSearchParams(location.search)
-    let qsEmail = URLSearch.get("email")
+    const qsEmail = URLSearch.get("email")
 
     fetch(`/contact/get?email=${qsEmail}`)
     .then(function(response) {
-      return response.text()
+      return response.json()
     })
-    .then(function(contacts) {
-      var contact = contacts.split(",")
-      xName.value = contact[0]
-      xEmail.value = contact[1]
-      xTel.value = contact[2]
-      xCompany.value = contact[3]
+    .then(function(contact) {
+      xName.value = contact.name
+      xEmail.value = contact.email
+      xTel.value = contact.tel
+      xCompany.value = contact.company
     })
 
     document.querySelector(".update-btn").addEventListener("click", function(e){
