@@ -36,7 +36,7 @@
       xCompany.value = contact.company
     })
 
-    document.querySelector(".update-btn").addEventListener("click", function(e){
+    document.querySelector(".update-btn").addEventListener("click", function(){
       if (xName.value == "" || xEmail.value == "") {
         alert("필수 입력 항목이 비었습니다")
         return
@@ -47,14 +47,14 @@
       })
     })
 
-    document.querySelector(".delete-btn").addEventListener("click", function(e) {
+    document.querySelector(".delete-btn").addEventListener("click", function() {
       fetch(`/contact/delete?email=${qsEmail}`)
       .then(function() {
         location.href = "index.html"
       })
     })
 
-    document.querySelector(".cancel-btn").addEventListener("click", function(e) {
+    document.querySelector(".cancel-btn").addEventListener("click", function() {
       location.href = "index.html"
     })
   </script>

@@ -21,7 +21,7 @@
     var xTel = document.querySelector("input[name=tel]")
     var xCompany = document.querySelector("input[name=company]")
 
-    document.querySelector(".add-btn").addEventListener("click", function(e){
+    document.querySelector(".add-btn").addEventListener("click", function(){
       if (xName.value == "" || xEmail.value == "") {
         alert("필수 입력 항목이 비었습니다")
         return
@@ -32,7 +32,7 @@
       })
     })
 
-    document.querySelector(".cancel-btn").addEventListener("click", function(e) {
+    document.querySelector(".cancel-btn").addEventListener("click", function() {
       location.href = "index.html"
     })
   </script>
