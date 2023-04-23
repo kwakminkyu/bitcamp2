@@ -12,6 +12,22 @@ public class ArrayList {
     return arr;
   }
 
+  static void add(Contact contact) {
+    if(contacts.length == size) {
+      contacts = grow();
+    }
+    contacts[size++] = contact;
+  }
+
+  static Contact set(int index, Contact contact) {
+    if (index < 0 || index >= size) {
+      return null;
+    }
+    Contact old = contacts[index];
+    contacts[index] = contact;
+    return old;
+  }
+
   static Contact[] grow() {
     Contact[] arr = new Contact[newlength()];
     copy(contacts, arr);

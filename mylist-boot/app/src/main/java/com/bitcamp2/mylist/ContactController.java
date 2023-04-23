@@ -13,10 +13,7 @@ public class ContactController {
 
   @GetMapping("/contact/add")
   public int add(Contact contact) {
-    if(ArrayList.contacts.length == ArrayList.size) {
-      ArrayList.contacts = ArrayList.grow();
-    }
-    ArrayList.contacts[ArrayList.size++] = contact;
+    ArrayList.add(contact);
     return ArrayList.size;
   }
 
@@ -35,8 +32,7 @@ public class ContactController {
     if (index == -1) {
       return "";
     }
-    ArrayList.contacts[index] = contact;
-    return ArrayList.contacts[index];
+    return ArrayList.set(index,contact) == null ? 0 : 1;
   }
 
   @GetMapping("/contact/delete")
