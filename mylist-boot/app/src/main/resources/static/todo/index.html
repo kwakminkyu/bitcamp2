@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>To-do</title>
+</head>
+<body>
+  할 일 : <input type="text" id="x-add-title"><br>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>완료</th>
+        <th>해야 할 일</th>
+        <th>삭제</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+    </tbody>
+  </table>
+
+  <script>
+    var xTbody = document.querySelector("tbody")
+    var xAddTitle = document.querySelector("#x-add-title")
+
+    fetch("/todo/list")
+    .then(function(response) {
+      return response.json()
+    })
+    .then(function(todolist) {
+      for (let i = 0; i < todolist.length; i++) {
+        let xTr = document.createElement("tr")
+        xTr.innerHTML = `<td><input type="checkbox"></td>
+                        <td>${todolist[i].title}</td>
+                        <td><button type="button" data-no=${i}>삭제</td>`
+        xTbody.appendChild(xTr)
+      }
+    })
+
+    xAddTitle.onkeyup = function(e) {
+      if (e.keyCode == 13) {
+        if (e.target.value == "") {
+          alert("항목이 비었습니다")
+          return
+        }
+        fetch(`/todo/add?title=${xAddTitle.value}`)
+        .then(function(){
+          location.reload()
+        })
+      }
+    }
+
+    xTbody.onclick = function(e) {
+      // if (e.target.localName == "input") {
+        
+      // }
+
+      if (e.target.localName == "button") {
+        let no = e.target.getAttribute("data-no")
+        fetch(`/todo/delete?index=${no}`)
+        .then(function() {
+          location.reload()
+        })
+      }
+    }
+  </script>
+</body>
+</html>
