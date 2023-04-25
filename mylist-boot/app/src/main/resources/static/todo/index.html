@@ -3,6 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <title>To-do</title>
+  <style>
+    .todo-checked {
+      text-decoration: line-through;
+      color: gray;
+    }
+  </style>
 </head>
 <body>
   할 일 : <input type="text" id="x-add-title"><br>
@@ -11,6 +17,7 @@
       <tr>
         <th>완료</th>
         <th>해야 할 일</th>
+        <th>변경</th>
         <th>삭제</th>
       </tr>
     </thead>
@@ -19,31 +26,41 @@
     </tbody>
   </table>
 
+  <input type="text" id="x-title-input">
+
   <script>
     var xTbody = document.querySelector("tbody")
     var xAddTitle = document.querySelector("#x-add-title")
+    var xTitleInput = document.querySelector("#x-title-input")
+    xTitleInput.style["display"] = "none"
 
     fetch("/todo/list")
     .then(function(response) {
       return response.json()
     })
     .then(function(todolist) {
+      console.log(todolist)
       for (let i = 0; i < todolist.length; i++) {
         let xTr = document.createElement("tr")
-        xTr.innerHTML = `<td><input type="checkbox"></td>
-                        <td>${todolist[i].title}</td>
-                        <td><button type="button" data-no=${i}>삭제</td>`
+        xTr.setAttribute("data-no", `${i}`)
+        if (todolist[i].done) {
+          todoCheck = "checked"
+          todoTitle = "todo-checked"
+        } else {
+          todoCheck = ""
+          todoTitle = ""
+        }
+        xTr.innerHTML = `<td><input type="checkbox" ${todoCheck}></td>
+                        <td class="x-todo-title ${todoTitle}"><span>${todolist[i].title}</span></td>
+                        <td><button type="button" class="update-btn">변경</td>
+                        <td><button type="button" class="delete-btn">삭제</td>`
         xTbody.appendChild(xTr)
       }
     })
 
     xAddTitle.onkeyup = function(e) {
-      if (e.keyCode == 13) {
-        if (e.target.value == "") {
-          alert("항목이 비었습니다")
-          return
-        }
-        fetch(`/todo/add?title=${xAddTitle.value}`)
+      if (e.keyCode == 13 && e.target.value != "") {
+        fetch(`/todo/add?title=${e.target.value}`)
         .then(function(){
           location.reload()
         })
@@ -51,12 +68,58 @@
     }
 
     xTbody.onclick = function(e) {
-      // if (e.target.localName == "input") {
-        
-      // }
+      let no = e.target.closest("tr").getAttribute("data-no")
+      let xTodoTitle = xTbody.querySelector(`tr[data-no="${no}"] .x-todo-title`)
 
-      if (e.target.localName == "button") {
-        let no = e.target.getAttribute("data-no")
+      if (e.target.type == "checkbox") {
+        fetch(`/todo/check?index=${no}&done=${e.target.checked}`)
+        .then(function(response) {
+          return response.json()
+        })
+        .then(function(result) {
+          if (result == 0) {
+            window.alert("변경 실패")
+          } else if (e.target.checked) {
+            xTodoTitle.classList.add("todo-checked")
+          } else {
+            xTodoTitle.classList.remove("todo-checked")
+          }
+        })
+      }
+
+      if (e.target.classList == "update-btn") {
+        if (xTitleInput.parentNode instanceof HTMLTableCellElement) {
+          xTitleInput.parentNode.querySelector("span").style["display"] = ""
+        }
+        let xTodoSpan = xTodoTitle.querySelector("span")
+        xTodoSpan.style["display"] = "none"
+        xTitleInput.style["display"] = ""
+        xTitleInput.value = xTodoSpan.innerHTML
+        xTodoTitle.appendChild(xTitleInput)
+
+        xTitleInput.onkeyup = function(e) {
+          let originTitle = xTitleInput.parentNode.querySelector("span").innerHTML
+          if (e.keyCode == 13 && e.target.value != "" && e.target.value != originTitle) {
+            fetch(`/todo/update?index=${no}&title=${e.target.value}`)
+            .then(function(response) {
+              return response.json()
+            })
+            .then(function(result) {
+              if (result == 0) {
+                return
+              } else {
+                location.reload()
+                // originTitle = xTitleInput.value
+                // xTitleInput.style["display"] = "none"
+                // xTitleInput.parentNode.querySelector("span").style["display"] = ""
+                // document.body.appendChild(xTitleInput)
+              }
+            })
+          }
+        }
+      }
+
+      if (e.target.classList == "delete-btn") {
         fetch(`/todo/delete?index=${no}`)
         .then(function() {
           location.reload()

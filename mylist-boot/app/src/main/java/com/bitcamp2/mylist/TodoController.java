@@ -18,11 +18,20 @@ public class TodoController {
   }
 
   @GetMapping("/todo/update")
-  public Object update(int index, Todo todo) {
+  public int update(int index, Todo todo) {
     if (index == -1) {
-      return "";
+      return 0;
     }
     return ArrayList2.set(index,todo) == null ? 0 : 1;
+  }
+
+  @GetMapping("/todo/check")
+  public int check(int index, boolean done) {
+    if (index == -1) {
+      return 0;
+    }
+    ArrayList2.list[index].done = done;
+    return 1;
   }
 
   @GetMapping("/todo/delete")
