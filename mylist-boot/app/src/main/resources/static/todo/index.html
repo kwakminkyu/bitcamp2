@@ -52,8 +52,8 @@
         }
         xTr.innerHTML = `<td><input type="checkbox" ${todoCheck}></td>
                         <td class="x-todo-title ${todoTitle}"><span>${todolist[i].title}</span></td>
-                        <td><button type="button" class="update-btn">변경</td>
-                        <td><button type="button" class="delete-btn">삭제</td>`
+                        <td><button type="button" class="update-btn">변경</button></td>
+                        <td><button type="button" class="delete-btn">삭제</button></td>`
         xTbody.appendChild(xTr)
       }
     })
@@ -91,15 +91,20 @@
         if (xTitleInput.parentNode instanceof HTMLTableCellElement) {
           xTitleInput.parentNode.querySelector("span").style["display"] = ""
         }
-        let xTodoSpan = xTodoTitle.querySelector("span")
-        xTodoSpan.style["display"] = "none"
+        let xTitleSpan = xTodoTitle.querySelector("span")
+        xTitleSpan.style["display"] = "none"
         xTitleInput.style["display"] = ""
-        xTitleInput.value = xTodoSpan.innerHTML
+        xTitleInput.value = xTitleSpan.innerHTML
         xTodoTitle.appendChild(xTitleInput)
+        xTitleInput.focus()
 
         xTitleInput.onkeyup = function(e) {
-          let originTitle = xTitleInput.parentNode.querySelector("span").innerHTML
-          if (e.keyCode == 13 && e.target.value != "" && e.target.value != originTitle) {
+          if (e.keyCode == 27) {
+            xTitleInput.style["display"] = "none"
+            xTitleSpan.style["display"] = ""
+            document.body.appendChild(xTitleInput)
+          }
+          if (e.keyCode == 13 && e.target.value != "" && e.target.value != xTitleSpan.innerHTML) {
             fetch(`/todo/update?index=${no}&title=${e.target.value}`)
             .then(function(response) {
               return response.json()
@@ -108,11 +113,10 @@
               if (result == 0) {
                 return
               } else {
-                location.reload()
-                // originTitle = xTitleInput.value
-                // xTitleInput.style["display"] = "none"
-                // xTitleInput.parentNode.querySelector("span").style["display"] = ""
-                // document.body.appendChild(xTitleInput)
+                xTitleInput.style["display"] = "none"
+                xTitleSpan.style["display"] = ""
+                xTitleSpan.innerHTML = xTitleInput.value
+                document.body.appendChild(xTitleInput)
               }
             })
           }
