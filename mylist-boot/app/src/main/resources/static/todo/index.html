@@ -11,7 +11,7 @@
   </style>
 </head>
 <body>
-  할 일 : <input type="text" id="x-add-title"><br>
+  <p>할 일 : <input type="text" id="x-add-title"></p>
   <table border="1">
     <thead>
       <tr>
@@ -56,12 +56,16 @@
                         <td><button type="button" class="delete-btn">삭제</button></td>`
         xTbody.appendChild(xTr)
       }
+      xAddTitle.focus()
     })
 
     xAddTitle.onkeyup = function(e) {
+      if (e.keyCode == 27) {
+        e.target.value = ""
+      }
       if (e.keyCode == 13 && e.target.value != "") {
         fetch(`/todo/add?title=${e.target.value}`)
-        .then(function(){
+        .then(function() {
           location.reload()
         })
       }
@@ -100,9 +104,7 @@
 
         xTitleInput.onkeyup = function(e) {
           if (e.keyCode == 27) {
-            xTitleInput.style["display"] = "none"
-            xTitleSpan.style["display"] = ""
-            document.body.appendChild(xTitleInput)
+            cancelTodoEditing()
           }
           if (e.keyCode == 13 && e.target.value != "" && e.target.value != xTitleSpan.innerHTML) {
             fetch(`/todo/update?index=${no}&title=${e.target.value}`)
@@ -113,10 +115,8 @@
               if (result == 0) {
                 return
               } else {
-                xTitleInput.style["display"] = "none"
-                xTitleSpan.style["display"] = ""
                 xTitleSpan.innerHTML = xTitleInput.value
-                document.body.appendChild(xTitleInput)
+                cancelTodoEditing()
               }
             })
           }
@@ -129,6 +129,12 @@
           location.reload()
         })
       }
+    }
+
+    const cancelTodoEditing = function() {
+      xTitleInput.style["display"] = "none"
+      xTitleInput.parentNode.querySelector("span").style["display"] = ""
+      document.body.appendChild(xTitleInput)
     }
   </script>
 </body>
