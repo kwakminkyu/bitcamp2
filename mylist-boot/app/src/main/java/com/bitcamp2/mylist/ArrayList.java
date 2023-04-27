@@ -1,44 +1,53 @@
 package com.bitcamp2.mylist;
 
 public class ArrayList {
-  static Contact[] contacts = new Contact[5];
+  static Object[] list = new Object[5];
   static int size = 0;
 
-  static Contact[] toArray() {
-    Contact[] arr = new Contact[size];
+  static Object[] toArray() {
+    Object[] arr = new Object[size];
     for (int i = 0; i < size; i++) {
-      arr[i] = contacts[i];
+      arr[i] = list[i];
     }
     return arr;
   }
 
-  static void add(Contact contact) {
-    if(contacts.length == size) {
-      contacts = grow();
+  static void add(Object obj) {
+    if(list.length == size) {
+      list = grow();
     }
-    contacts[size++] = contact;
+    list[size++] = obj;
   }
 
-  static Contact set(int index, Contact contact) {
+  static Object set(int index, Object obj) {
     if (index < 0 || index >= size) {
       return null;
     }
-    Contact old = contacts[index];
-    contacts[index] = contact;
+    Object old = list[index];
+    list[index] = obj;
     return old;
   }
 
-  static Contact[] grow() {
-    Contact[] arr = new Contact[newlength()];
-    copy(contacts, arr);
+  static Object remove(int index) {
+    Object old = list[index];
+    for (int i = index + 1; i < size; i++) {
+      list[i - 1] = list[i];
+    }
+    size--;
+    return old;
+  }
+
+  static Object[] grow() {
+    Object[] arr = new Object[newlength()];
+    copy(list, arr);
     return arr;
   }
 
   static int newlength() {
-    return contacts.length + (contacts.length >> 1);
+    return list.length + (list.length >> 1);
   }
 
-  static void copy(Contact[] source, Contact[] target) {
+  static void copy(Object[] source, Object[] target) {
     int length = source.length;
     if (target.length < source.length) {
       length = target.length;
@@ -46,23 +55,5 @@ public class ArrayList {
     for (int i = 0; i < length; i++) {
       target[i] = source[i];
     }
-  }
-
-  static int indexOf(String email) {
-    for (int i = 0; i < size; i++) {
-      if (contacts[i].email.equals(email)) {
-        return i;
-      }
-    }
-    return -1;
-  }
-
-  static Contact remove(int index) {
-    Contact old = contacts[index];
-    for (int i = index + 1; i < size; i++) {
-      contacts[i - 1] = contacts[i];
-    }
-    size--;
-    return old;
   }
 }
