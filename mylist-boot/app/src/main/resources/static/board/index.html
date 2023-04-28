@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>게시판</title>
+</head>
+<body>
+  <p><a href="form.html">새 게시글</a></p>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>제목</th>
+        <th>내용</th>
+        <th>조회수</th>
+        <th>작성일</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+    </tbody>
+  </table>
+
+  <script>
+    var xTbody = document.querySelector("tbody")
+
+    fetch("/board/list")
+    .then(function(response) {
+      return response.json()
+    })
+    .then(function(boards) {
+      for (let i = 0; i < boards.length; i++) {
+        let board = boards[i]
+        var xTr = document.createElement("tr")
+        xTr.innerHTML = `<td><a href="view.html?index=${i}">${board.title}</a></td>
+                        <td>${board.content}</td>
+                        <td>${board.viewCount}</td>
+                        <td>${board.createDate}</td>`
+        xTbody.appendChild(xTr)
+      }
+    })
+  </script>
+</body>
+</html>

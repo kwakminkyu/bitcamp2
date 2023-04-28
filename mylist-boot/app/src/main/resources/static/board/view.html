@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>새 연락처</title>
+</head>
+<body>
+  <form>
+    제목: <input name="title" type="text"><br>
+    내용: <textarea name="content" type="text" cols="60" rows="10"></textarea><br>
+    조회수: <span id="view-count"></span><br>
+    작성일: <span id="create-date"></span><br>
+    <button class="update-btn" type="button">변경</button>
+    <button class="delete-btn" type="button">삭제</button>
+    <button class="cancel-btn" type="button">취소</button>
+  </form>
+
+  <script>
+    var xTitle = document.querySelector("input[name=title]")
+    var xContent = document.querySelector("textarea[name=content]")
+    var xViewCount = document.querySelector("#view-count")
+    var xCreateDate = document.querySelector("#create-date")
+
+    const URLSearch = new URLSearchParams(location.search)
+    const qsIndex = URLSearch.get("index")
+
+    fetch(`/board/get?index=${qsIndex}`)
+    .then(function(response) {
+      return response.json()
+    })
+    .then(function(board) {
+      xTitle.value = board.title
+      xContent.value = board.content
+      xViewCount.innerHTML = board.viewCount
+      xCreateDate.innerHTML = board.createDate
+    })
+
+    document.querySelector(".update-btn").addEventListener("click", function(){
+      if (xTitle.value == "" || xContent.value == "") {
+        alert("필수 입력 항목이 비었습니다")
+        return
+      }
+      fetch(`/board/update?index=${qsIndex}&title=${xTitle.value}&content=${xContent.value}`)
+      .then(function(){
+        location.href = "index.html"
+      })
+    })
+
+    document.querySelector(".delete-btn").addEventListener("click", function() {
+      fetch(`/board/delete?index=${qsIndex}`)
+      .then(function() {
+        location.href = "index.html"
+      })
+    })
+
+    document.querySelector(".cancel-btn").addEventListener("click", function() {
+      location.href = "index.html"
+    })
+  </script>
+</body>
+</html>
