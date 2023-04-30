@@ -39,7 +39,7 @@ public class ArrayList {
 
   Object[] grow() {
     Object[] arr = new Object[newlength()];
-    copy(list, arr);
+    copy(arr);
     return arr;
   }
 
@@ -47,13 +47,13 @@ public class ArrayList {
     return list.length + (list.length >> 1);
   }
 
-  void copy(Object[] source, Object[] target) {
-    int length = source.length;
-    if (target.length < source.length) {
+  void copy(Object[] target) {
+    int length = list.length;
+    if (target.length < list.length) {
       length = target.length;
     }
     for (int i = 0; i < length; i++) {
-      target[i] = source[i];
+      target[i] = list[i];
     }
   }
 }
