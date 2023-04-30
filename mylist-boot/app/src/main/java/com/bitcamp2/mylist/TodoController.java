@@ -6,15 +6,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TodoController {
 
+  ArrayList todoList = new ArrayList();
+
   @GetMapping("/todo/list")
   public Object list() {
-    return ArrayList2.toArray(); 
+    return todoList.toArray(); 
   }
 
   @GetMapping("/todo/add")
   public int add(Todo todo) {
-    ArrayList2.add(todo);
-    return ArrayList2.size;
+    todoList.add(todo);
+    return todoList.size;
   }
 
   @GetMapping("/todo/update")
@@ -22,7 +24,7 @@ public class TodoController {
     if (index == -1) {
       return 0;
     }
-    return ArrayList2.set(index,todo) == null ? 0 : 1;
+    return todoList.set(index,todo) == null ? 0 : 1;
   }
 
   @GetMapping("/todo/check")
@@ -30,7 +32,7 @@ public class TodoController {
     if (index == -1) {
       return 0;
     }
-    ((Todo)ArrayList2.list[index]).done = done;
+    ((Todo)todoList.list[index]).done = done;
     return 1;
   }
 
@@ -39,6 +41,6 @@ public class TodoController {
     if (index == -1) {
       return 0;
     }
-    return ArrayList2.remove(index);
+    return todoList.remove(index);
   }
 }

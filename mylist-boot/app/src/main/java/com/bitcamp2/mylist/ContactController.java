@@ -6,15 +6,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ContactController {
 
+  ArrayList contactList = new ArrayList();
+
   @GetMapping("/contact/list")
   public Object list() {
-    return ArrayList.toArray(); 
+    return contactList.toArray(); 
   }
 
   @GetMapping("/contact/add")
   public int add(Contact contact) {
-    ArrayList.add(contact);
-    return ArrayList.size;
+    contactList.add(contact);
+    return contactList.size;
   }
 
   @GetMapping("/contact/get")
@@ -23,7 +25,7 @@ public class ContactController {
     if (index == -1) {
       return "";
     }
-    return ArrayList.list[index];
+    return contactList.list[index];
   }
 
   @GetMapping("/contact/update")
@@ -32,7 +34,7 @@ public class ContactController {
     if (index == -1) {
       return "";
     }
-    return ArrayList.set(index,contact) == null ? 0 : 1;
+    return contactList.set(index,contact) == null ? 0 : 1;
   }
 
   @GetMapping("/contact/delete")
@@ -41,12 +43,12 @@ public class ContactController {
     if (index == -1) {
       return 0;
     }
-    return ArrayList.remove(index);
+    return contactList.remove(index);
   }
 
-  static int indexOf(String email) {
-    for (int i = 0; i < ArrayList.size; i++) {
-      if (((Contact)ArrayList.list[i]).email.equals(email)) {
+  int indexOf(String email) {
+    for (int i = 0; i < contactList.size; i++) {
+      if (((Contact)contactList.list[i]).email.equals(email)) {
         return i;
       }
     }
