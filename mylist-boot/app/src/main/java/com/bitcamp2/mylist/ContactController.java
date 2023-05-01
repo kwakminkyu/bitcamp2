@@ -2,6 +2,7 @@ package com.bitcamp2.mylist;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.bitcamp2.util.ArrayList;
 
 @RestController
 public class ContactController {
@@ -16,7 +17,7 @@ public class ContactController {
   @GetMapping("/contact/add")
   public int add(Contact contact) {
     contactList.add(contact);
-    return contactList.size;
+    return contactList.size();
   }
 
   @GetMapping("/contact/get")
@@ -25,7 +26,7 @@ public class ContactController {
     if (index == -1) {
       return "";
     }
-    return contactList.list[index];
+    return contactList.get(index);
   }
 
   @GetMapping("/contact/update")
@@ -47,8 +48,8 @@ public class ContactController {
   }
 
   int indexOf(String email) {
-    for (int i = 0; i < contactList.size; i++) {
-      if (((Contact)contactList.list[i]).email.equals(email)) {
+    for (int i = 0; i < contactList.size(); i++) {
+      if (((Contact)contactList.get(i)).email.equals(email)) {
         return i;
       }
     }

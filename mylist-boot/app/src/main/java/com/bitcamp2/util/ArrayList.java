@@ -1,10 +1,10 @@
-package com.bitcamp2.mylist;
+package com.bitcamp2.util;
 
 public class ArrayList {
   Object[] list = new Object[5];
   int size = 0;
 
-  Object[] toArray() {
+  public Object[] toArray() {
     Object[] arr = new Object[size];
     for (int i = 0; i < size; i++) {
       arr[i] = list[i];
@@ -12,14 +12,14 @@ public class ArrayList {
     return arr;
   }
 
-  void add(Object obj) {
+  public void add(Object obj) {
     if(list.length == size) {
       list = grow();
     }
     list[size++] = obj;
   }
 
-  Object set(int index, Object obj) {
+  public Object set(int index, Object obj) {
     if (index < 0 || index >= size) {
       return null;
     }
@@ -28,7 +28,7 @@ public class ArrayList {
     return old;
   }
 
-  Object remove(int index) {
+  public Object remove(int index) {
     Object old = list[index];
     for (int i = index + 1; i < size; i++) {
       list[i - 1] = list[i];
@@ -55,5 +55,13 @@ public class ArrayList {
     for (int i = 0; i < length; i++) {
       target[i] = list[i];
     }
+  }
+
+  public Object get(int index) {
+    return list[index];
+  }
+
+  public int size() {
+    return size;
   }
 }

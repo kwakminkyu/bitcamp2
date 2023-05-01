@@ -2,6 +2,7 @@ package com.bitcamp2.mylist;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.bitcamp2.util.ArrayList;
 
 @RestController
 public class TodoController {
@@ -16,7 +17,7 @@ public class TodoController {
   @GetMapping("/todo/add")
   public int add(Todo todo) {
     todoList.add(todo);
-    return todoList.size;
+    return todoList.size();
   }
 
   @GetMapping("/todo/update")
@@ -32,7 +33,7 @@ public class TodoController {
     if (index == -1) {
       return 0;
     }
-    ((Todo)todoList.list[index]).done = done;
+    ((Todo)todoList.get(index)).done = done;
     return 1;
   }
 
