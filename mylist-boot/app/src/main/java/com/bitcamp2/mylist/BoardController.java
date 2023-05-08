@@ -3,6 +3,7 @@ package com.bitcamp2.mylist;
 import java.sql.Date;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.bitcamp2.domain.Board;
 import com.bitcamp2.util.ArrayList;
 
 @RestController
@@ -28,7 +29,7 @@ public class BoardController {
       return "";
     }
     Board board = (Board)boardList.get(index);
-    board.viewCount++;
+    board.setViewCount(board.getViewCount() + 1);
     return board;
   }
 
@@ -38,8 +39,8 @@ public class BoardController {
       return 0;
     }
     Board old = (Board)boardList.get(index);
-    board.viewCount = old.viewCount;
-    board.createDate = old.createDate;
+    board.setViewCount(old.getViewCount());
+    board.setCreateDate(old.getCreateDate());
     return boardList.set(index,board) == null ? 0 : 1;
   }
 

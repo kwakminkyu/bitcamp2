@@ -1,4 +1,4 @@
-package com.bitcamp2.mylist;
+package com.bitcamp2.domain;
 
 public class Todo {
   String title;

@@ -18,7 +18,7 @@
 
     document.querySelector(".add-btn").addEventListener("click", function(){
       if (xTitle.value == "" || xContent.value == "") {
-        alert("필수 입력 항목이 비었습니다")
+        alert("필수 항목이 비었습니다")
         return
       }
       fetch(`/board/add?title=${xTitle.value}&content=${xContent.value}`)

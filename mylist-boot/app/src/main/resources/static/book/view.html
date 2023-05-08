@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>독서록 상세</title>
+</head>
+<body>
+  <form>
+    *제목: <input name="title" type="text"><br>
+    *작가: <input name="author" type="text"><br>
+    출판사: <input name="press" type="text"><br>
+    페이지: <input name="page" type="number"><br>
+    가격: <input name="price" type="number"><br>
+    *감상문: <textarea name="feed" type="text" cols="60" rows="10"></textarea><br>
+    독서일: <span id="read-date"></span><br>
+    (*)표 항목은 필수 항목 입니다.<br>
+    <button class="update-btn" type="button">변경</button>
+    <button class="delete-btn" type="button">삭제</button>
+    <button class="cancel-btn" type="button">취소</button>
+  </form>
+
+  <script>
+    var xTitle = document.querySelector("input[name=title]")
+    var xAuthor = document.querySelector("input[name=author]")
+    var xPress = document.querySelector("input[name=press]")
+    var xPage = document.querySelector("input[name=page]")
+    var xPrice = document.querySelector("input[name=price]")
+    var xFeed = document.querySelector("textarea[name=feed]")
+    var xReadDate = document.querySelector("#read-date")
+
+    const URLSearch = new URLSearchParams(location.search)
+    const qsIndex = URLSearch.get("index")
+
+    fetch(`/book/get?index=${qsIndex}`)
+    .then(function(response) {
+      return response.json()
+    })
+    .then(function(book) {
+      xTitle.value = book.title
+      xAuthor.value = book.author
+      xPress.value = book.press
+      xPage.value = book.page
+      xPrice.value = book.price
+      xFeed.value = book.feed
+      xReadDate.innerHTML = book.readDate
+    })
+
+    document.querySelector(".update-btn").addEventListener("click", function(){
+      if (xTitle.value == "" || xAuthor.value == "" || xFeed.value == "") {
+        alert("필수 항목이 비었습니다")
+        return
+      }
+      fetch(`/book/update?index=${qsIndex}&title=${xTitle.value}&author=${xAuthor.value}&press=${xPress.value}&page=${xPage.value}&price=${xPrice.value}&feed=${xFeed.value}`)
+      .then(function(){
+        location.href = "index.html"
+      })
+    })
+
+    document.querySelector(".delete-btn").addEventListener("click", function() {
+      fetch(`/book/delete?index=${qsIndex}`)
+      .then(function() {
+        location.href = "index.html"
+      })
+    })
+
+    document.querySelector(".cancel-btn").addEventListener("click", function() {
+      location.href = "index.html"
+    })
+  </script>
+</body>
+</html>

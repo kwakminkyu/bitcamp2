@@ -10,7 +10,7 @@
     이메일*: <input name="email" type="text"><br>
     전화번호: <input name="tel" type="text"><br>
     회사: <input name="company" type="text"><br>
-    * 표시 항목은 필수 입력 항목입니다<br>
+    (*)표시 항목은 필수 항목입니다.<br>
     <button class="add-btn" type="button">추가</button>
     <button class="cancel-btn" type="button">취소</button>
   </form>
@@ -23,7 +23,7 @@
 
     document.querySelector(".add-btn").addEventListener("click", function(){
       if (xName.value == "" || xEmail.value == "") {
-        alert("필수 입력 항목이 비었습니다")
+        alert("필수 항목이 비었습니다")
         return
       }
       fetch(`/contact/add?name=${xName.value}&email=${xEmail.value}&tel=${xTel.value}&company=${xCompany.value}`)

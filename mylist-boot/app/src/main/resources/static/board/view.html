@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>새 연락처</title>
+  <title>게시판 상세</title>
 </head>
 <body>
   <form>
@@ -37,7 +37,7 @@
 
     document.querySelector(".update-btn").addEventListener("click", function(){
       if (xTitle.value == "" || xContent.value == "") {
-        alert("필수 입력 항목이 비었습니다")
+        alert("필수 항목이 비었습니다")
         return
       }
       fetch(`/board/update?index=${qsIndex}&title=${xTitle.value}&content=${xContent.value}`)
