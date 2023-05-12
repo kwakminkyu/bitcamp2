@@ -1,5 +1,7 @@
 package com.bitcamp2.mylist;
 
+import java.io.FileReader;
+import java.io.FileWriter;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.bitcamp2.domain.Contact;
@@ -8,7 +10,31 @@ import com.bitcamp2.util.ArrayList;
 @RestController
 public class ContactController {
 
-  ArrayList contactList = new ArrayList();
+  ArrayList contactList;
+
+  public ContactController() throws Exception {
+    contactList = new ArrayList();
+    FileReader in = new FileReader("contacts.csv");
+    StringBuilder buf = new StringBuilder();
+
+    int c;
+    while(true) {
+      c = in.read();
+
+      if (c == -1) {
+        break;
+      }
+
+      if (c == '\n') {
+        contactList.add(Contact.valueOf(buf.toString()));
+        buf.setLength(0);
+      } else {
+        buf.append((char)c);
+      }
+    }
+    in.close();
+  }
+
 
   @GetMapping("/contact/list")
   public Object list() {
@@ -46,6 +72,17 @@ public class ContactController {
       return 0;
     }
     return contactList.remove(index);
+  }
+
+  @GetMapping("/contact/save")
+  public Object save() throws Exception {
+    FileWriter out = new FileWriter("contacts.csv");
+    for (Object obj : contactList.toArray()) {
+      Contact contact = (Contact)obj;
+      out.write(contact.toCsvString() + "\n");
+    }
+    out.close();
+    return 0;
   }
 
   int indexOf(String email) {

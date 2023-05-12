@@ -11,11 +11,7 @@
       <tr>
         <th>제목</th>
         <th>작가</th>
-        <th>출판사</th>
-        <th>페이지</th>
-        <th>가격</th>
         <th>감상문</th>
-        <th>독서일</th>
       </tr>
     </thead>
     <tbody>
@@ -36,11 +32,7 @@
         var xTr = document.createElement("tr")
         xTr.innerHTML = `<td><a href="view.html?index=${i}">${book.title}</a></td>
                         <td>${book.author}</td>
-                        <td>${book.press}</td>
-                        <td>${book.page}</td>
-                        <td>${book.price}</td>
-                        <td>${book.feed}</td>
-                        <td>${book.readDate}</td>`
+                        <td>${book.feed}</td>`
         xTbody.appendChild(xTr)
       }
     })

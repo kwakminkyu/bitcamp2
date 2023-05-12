@@ -12,7 +12,7 @@
     페이지: <input name="page" type="number"><br>
     가격: <input name="price" type="number"><br>
     *감상문: <textarea name="feed" type="text" cols="60" rows="10"></textarea><br>
-    독서일: <span id="read-date"></span><br>
+    독서일: <input name="read-date" type="date"><br>
     (*)표 항목은 필수 항목 입니다.<br>
     <button class="update-btn" type="button">변경</button>
     <button class="delete-btn" type="button">삭제</button>
@@ -26,7 +26,7 @@
     var xPage = document.querySelector("input[name=page]")
     var xPrice = document.querySelector("input[name=price]")
     var xFeed = document.querySelector("textarea[name=feed]")
-    var xReadDate = document.querySelector("#read-date")
+    var xReadDate = document.querySelector("input[name=read-date]")
 
     const URLSearch = new URLSearchParams(location.search)
     const qsIndex = URLSearch.get("index")
@@ -42,7 +42,7 @@
       xPage.value = book.page
       xPrice.value = book.price
       xFeed.value = book.feed
-      xReadDate.innerHTML = book.readDate
+      xReadDate.value = book.readDate
     })
 
     document.querySelector(".update-btn").addEventListener("click", function(){
@@ -50,7 +50,13 @@
         alert("필수 항목이 비었습니다")
         return
       }
-      fetch(`/book/update?index=${qsIndex}&title=${xTitle.value}&author=${xAuthor.value}&press=${xPress.value}&page=${xPage.value}&price=${xPrice.value}&feed=${xFeed.value}`)
+      
+      let qs = `title=${xTitle.value}&author=${xAuthor.value}&press=${xPress.value}&page=${xPage.value}&price=${xPrice.value}&feed=${xFeed.value}`
+      if (xReadDate.value != "") {
+        qs += `&readDate=${xReadDate.value}`
+      }
+
+      fetch(`/book/update?index=${qsIndex}&${qs}`)
       .then(function(){
         location.href = "index.html"
       })
