@@ -1,4 +1,4 @@
-package com.bitcamp2.domain;
+package com.bitcamp2.mylist.domain;
 
 import java.sql.Date;
 

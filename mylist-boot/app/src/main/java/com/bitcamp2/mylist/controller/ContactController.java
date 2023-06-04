@@ -1,10 +1,10 @@
-package com.bitcamp2.mylist;
+package com.bitcamp2.mylist.controller;
 
-import java.io.FileReader;
 import java.io.FileWriter;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.bitcamp2.domain.Contact;
+import com.bitcamp2.io.FileReader2;
+import com.bitcamp2.mylist.domain.Contact;
 import com.bitcamp2.util.ArrayList;
 
 @RestController
@@ -14,23 +14,11 @@ public class ContactController {
 
   public ContactController() throws Exception {
     contactList = new ArrayList();
-    FileReader in = new FileReader("contacts.csv");
-    StringBuilder buf = new StringBuilder();
+    FileReader2 in = new FileReader2("contacts.csv");
 
-    int c;
-    while(true) {
-      c = in.read();
-
-      if (c == -1) {
-        break;
-      }
-
-      if (c == '\n') {
-        contactList.add(Contact.valueOf(buf.toString()));
-        buf.setLength(0);
-      } else {
-        buf.append((char)c);
-      }
+    String line;
+    while((line = in.readLine()).length() != 0) {
+      contactList.add(Contact.valueOf(line));
     }
     in.close();
   }

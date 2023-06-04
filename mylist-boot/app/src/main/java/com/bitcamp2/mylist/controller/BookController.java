@@ -1,10 +1,10 @@
-package com.bitcamp2.mylist;
+package com.bitcamp2.mylist.controller;
 
-import java.io.FileReader;
 import java.io.FileWriter;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.bitcamp2.domain.Book;
+import com.bitcamp2.io.FileReader2;
+import com.bitcamp2.mylist.domain.Book;
 import com.bitcamp2.util.ArrayList;
 
 @RestController
@@ -14,23 +14,11 @@ public class BookController {
 
   public BookController() throws Exception {
     bookList = new ArrayList();
-    FileReader in = new FileReader("books.csv");
-    StringBuilder buf = new StringBuilder();
+    FileReader2 in = new FileReader2("books.csv");
 
-    int c;
-    while(true) {
-      c = in.read();
-
-      if (c == -1) {
-        break;
-      }
-
-      if (c == '\n') {
-        bookList.add(Book.valueOf(buf.toString()));
-        buf.setLength(0);
-      } else {
-        buf.append((char)c);
-      }
+    String line;
+    while((line = in.readLine()).length() != 0) {
+      bookList.add(Book.valueOf(line));
     }
     in.close();
   }
