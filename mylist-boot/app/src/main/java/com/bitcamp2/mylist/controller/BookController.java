@@ -1,9 +1,9 @@
 package com.bitcamp2.mylist.controller;
 
-import java.io.FileWriter;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.bitcamp2.io.FileReader2;
+import com.bitcamp2.io.FileWriter2;
 import com.bitcamp2.mylist.domain.Book;
 import com.bitcamp2.util.ArrayList;
 
@@ -57,10 +57,10 @@ public class BookController {
 
   @GetMapping("/book/save")
   public Object save() throws Exception {
-    FileWriter out = new FileWriter("books.csv");
+    FileWriter2 out = new FileWriter2("books.csv");
     for (Object obj : bookList.toArray()) {
       Book book = (Book)obj;
-      out.write(book.toCsvString() + "\n");
+      out.println(book.toCsvString());
     }
     out.close();
     return 0;
