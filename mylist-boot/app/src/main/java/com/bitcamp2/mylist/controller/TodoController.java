@@ -1,9 +1,11 @@
 package com.bitcamp2.mylist.controller;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.bitcamp2.io.FileReader2;
-import com.bitcamp2.io.FileWriter2;
 import com.bitcamp2.mylist.domain.Todo;
 import com.bitcamp2.util.ArrayList;
 
@@ -13,11 +15,10 @@ public class TodoController {
   ArrayList todoList = new ArrayList();
 
   public TodoController() throws Exception {
-    todoList = new ArrayList();
-    FileReader2 in = new FileReader2("todos.csv");
+    BufferedReader in = new BufferedReader(new FileReader("todos.csv"));
 
     String line;
-    while((line = in.readLine()).length() != 0) {
+    while((line = in.readLine()) != null) {
       todoList.add(Todo.valueOf(line));
     }
     in.close();
@@ -61,7 +62,8 @@ public class TodoController {
 
   @GetMapping("/todo/save")
   public Object save() throws Exception {
-    FileWriter2 out = new FileWriter2("todos.csv");
+    PrintWriter out = new PrintWriter(new FileWriter("todos.csv"));
+
     for (Object obj : todoList.toArray()) {
       Todo todo = (Todo)obj;
       out.println(todo.toCsvString());

@@ -1,10 +1,12 @@
 package com.bitcamp2.mylist.controller;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.sql.Date;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.bitcamp2.io.FileReader2;
-import com.bitcamp2.io.FileWriter2;
 import com.bitcamp2.mylist.domain.Board;
 import com.bitcamp2.util.ArrayList;
 
@@ -14,11 +16,10 @@ public class BoardController {
   ArrayList boardList = new ArrayList();
 
   public BoardController() throws Exception {
-    boardList = new ArrayList();
-    FileReader2 in = new FileReader2("boards.csv");
+    BufferedReader in = new BufferedReader(new FileReader("boards.csv"));
 
     String line;
-    while((line = in.readLine()).length() != 0) {
+    while((line = in.readLine()) != null) {
       boardList.add(Board.valueOf(line));
     }
     in.close();
@@ -64,7 +65,8 @@ public class BoardController {
 
   @GetMapping("/board/save")
   public Object save() throws Exception {
-    FileWriter2 out = new FileWriter2("boards.csv");
+    PrintWriter out = new PrintWriter(new FileWriter("boards.csv"));
+
     for (Object obj : boardList.toArray()) {
       Board board = (Board)obj;
       out.println(board.toCsvString());
