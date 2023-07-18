@@ -1,9 +1,11 @@
 package com.bitcamp2.mylist.controller;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.PrintWriter;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.sql.Date;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,12 +18,18 @@ public class BoardController {
   ArrayList boardList = new ArrayList();
 
   public BoardController() throws Exception {
-    BufferedReader in = new BufferedReader(new FileReader("boards.csv"));
+    ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream("boards.ser")));
 
-    String line;
-    while((line = in.readLine()) != null) {
-      boardList.add(Board.valueOf(line));
-    }
+    //    while(true) {
+    //      try {
+    //        Board board = (Board)in.readObject();
+    //        boardList.add(board);
+    //      } catch (Exception e) {
+    //        break;
+    //      }
+    //    }
+
+    boardList = (ArrayList)in.readObject();
     in.close();
   }
 
@@ -65,13 +73,14 @@ public class BoardController {
 
   @GetMapping("/board/save")
   public Object save() throws Exception {
-    PrintWriter out = new PrintWriter(new FileWriter("boards.csv"));
+    ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream("boards.ser")));
 
-    for (Object obj : boardList.toArray()) {
-      Board board = (Board)obj;
-      out.println(board.toCsvString());
-    }
+    //    for (Object obj : boardList.toArray()) {
+    //      out.writeObject(obj);
+    //    }
+
+    out.writeObject(boardList);
     out.close();
-    return 0;
+    return boardList.toArray().length;
   }
 }

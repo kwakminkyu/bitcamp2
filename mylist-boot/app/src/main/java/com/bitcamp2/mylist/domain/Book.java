@@ -1,8 +1,9 @@
 package com.bitcamp2.mylist.domain;
 
+import java.io.Serializable;
 import java.sql.Date;
 
-public class Book {
+public class Book implements Serializable {
   String title;
   String author;
   String press;

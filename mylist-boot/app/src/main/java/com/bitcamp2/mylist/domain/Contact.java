@@ -1,6 +1,8 @@
 package com.bitcamp2.mylist.domain;
 
-public class Contact {
+import java.io.Serializable;
+
+public class Contact implements Serializable {
   String name;
   String email;
   String tel;

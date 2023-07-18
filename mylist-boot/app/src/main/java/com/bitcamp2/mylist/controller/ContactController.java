@@ -1,9 +1,11 @@
 package com.bitcamp2.mylist.controller;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.PrintWriter;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.bitcamp2.mylist.domain.Contact;
@@ -15,11 +17,16 @@ public class ContactController {
   ArrayList contactList = new ArrayList();
 
   public ContactController() throws Exception {
-    BufferedReader in = new BufferedReader(new FileReader("contacts.csv"));
+    ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream("contacts.ser")));
 
-    String line;
-    while((line = in.readLine()) != null) {
-      contactList.add(Contact.valueOf(line));
+    while(true) {
+      try {
+        Contact contact = (Contact)in.readObject();
+
+        contactList.add(contact);
+      } catch (Exception e) {
+        break;
+      }
     }
     in.close();
   }
@@ -65,14 +72,13 @@ public class ContactController {
 
   @GetMapping("/contact/save")
   public Object save() throws Exception {
-    PrintWriter out = new PrintWriter(new FileWriter("contacts.csv"));
+    ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream("contacts.ser")));
 
     for (Object obj : contactList.toArray()) {
-      Contact contact = (Contact)obj;
-      out.println(contact.toCsvString());
+      out.writeObject(obj);
     }
     out.close();
-    return 0;
+    return contactList.toArray().length;
   }
 
   int indexOf(String email) {
