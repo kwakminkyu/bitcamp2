@@ -17,18 +17,14 @@ public class TodoController {
   ArrayList todoList = new ArrayList();
 
   public TodoController() throws Exception {
-    ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream("todos.ser")));
+    try {
+      ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream("todos.ser")));
 
-    while(true) {
-      try {
-        Todo todo = (Todo)in.readObject();
-
-        todoList.add(todo);
-      } catch (Exception e) {
-        break;
-      }
+      todoList = (ArrayList)in.readObject();
+      in.close();
+    } catch (Exception e) {
+      System.out.println("데이턴 로딩 중 오류 발생");
     }
-    in.close();
   }
 
   @GetMapping("/todo/list")
@@ -71,9 +67,7 @@ public class TodoController {
   public Object save() throws Exception {
     ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream("todos.ser")));
 
-    for (Object obj : todoList.toArray()) {
-      out.writeObject(obj);
-    }
+    out.writeObject(todoList);
     out.close();
     return todoList.toArray().length;
   }

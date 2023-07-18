@@ -17,20 +17,15 @@ public class ContactController {
   ArrayList contactList = new ArrayList();
 
   public ContactController() throws Exception {
-    ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream("contacts.ser")));
+    try {
+      ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream("contacts.ser")));
 
-    while(true) {
-      try {
-        Contact contact = (Contact)in.readObject();
-
-        contactList.add(contact);
-      } catch (Exception e) {
-        break;
-      }
+      contactList = (ArrayList)in.readObject();
+      in.close();
+    } catch (Exception e) {
+      System.out.println("데이턴 로딩 중 오류 발생");
     }
-    in.close();
   }
-
 
   @GetMapping("/contact/list")
   public Object list() {
@@ -74,9 +69,7 @@ public class ContactController {
   public Object save() throws Exception {
     ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream("contacts.ser")));
 
-    for (Object obj : contactList.toArray()) {
-      out.writeObject(obj);
-    }
+    out.writeObject(contactList);
     out.close();
     return contactList.toArray().length;
   }

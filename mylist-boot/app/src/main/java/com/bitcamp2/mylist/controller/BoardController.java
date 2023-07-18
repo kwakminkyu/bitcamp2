@@ -18,19 +18,23 @@ public class BoardController {
   ArrayList boardList = new ArrayList();
 
   public BoardController() throws Exception {
-    ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream("boards.ser")));
+    try {
+      ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream("boards.ser")));
 
-    //    while(true) {
-    //      try {
-    //        Board board = (Board)in.readObject();
-    //        boardList.add(board);
-    //      } catch (Exception e) {
-    //        break;
-    //      }
-    //    }
+      //    while(true) {
+      //      try {
+      //        Board board = (Board)in.readObject();
+      //        boardList.add(board);
+      //      } catch (Exception e) {
+      //        break;
+      //      }
+      //    }
 
-    boardList = (ArrayList)in.readObject();
-    in.close();
+      boardList = (ArrayList)in.readObject();
+      in.close();
+    } catch (Exception e) {
+      System.out.println("데이턴 로딩 중 오류 발생");
+    }
   }
 
   @GetMapping("/board/list")

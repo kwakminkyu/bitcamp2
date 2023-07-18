@@ -17,18 +17,14 @@ public class BookController {
   ArrayList bookList = new ArrayList();
 
   public BookController() throws Exception {
-    ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream("books.ser")));
+    try {
+      ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream("books.ser")));
 
-    while(true) {
-      try {
-        Book book = (Book)in.readObject();
-
-        bookList.add(book);
-      } catch (Exception e) {
-        break;
-      }
+      bookList = (ArrayList)in.readObject();
+      in.close();
+    } catch (Exception e) {
+      System.out.println("데이턴 로딩 중 오류 발생");
     }
-    in.close();
   }
 
   @GetMapping("/book/list")
@@ -67,10 +63,8 @@ public class BookController {
   public Object save() throws Exception {
     ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream("books.ser")));
 
-    for (Object obj : bookList.toArray()) {
-      out.writeObject(obj);
-    }
+    out.writeObject(bookList);
     out.close();
-    return bookList.toArray();
+    return bookList.toArray().length;
   }
 }
