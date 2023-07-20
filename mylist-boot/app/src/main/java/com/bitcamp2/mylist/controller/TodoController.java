@@ -69,6 +69,6 @@ public class TodoController {
 
     out.writeObject(todoList);
     out.close();
-    return todoList.toArray().length;
+    return todoList.size();
   }
 }

@@ -85,6 +85,6 @@ public class BoardController {
 
     out.writeObject(boardList);
     out.close();
-    return boardList.toArray().length;
+    return boardList.size();
   }
 }

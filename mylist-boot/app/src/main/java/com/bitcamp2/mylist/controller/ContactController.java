@@ -71,7 +71,7 @@ public class ContactController {
 
     out.writeObject(contactList);
     out.close();
-    return contactList.toArray().length;
+    return contactList.size();
   }
 
   int indexOf(String email) {

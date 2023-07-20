@@ -65,6 +65,6 @@ public class BookController {
 
     out.writeObject(bookList);
     out.close();
-    return bookList.toArray().length;
+    return bookList.size();
   }
 }
